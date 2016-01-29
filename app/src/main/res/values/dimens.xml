@@ -4,7 +4,7 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="description_margin">21dp</dimen>
-
+    <dimen name="switchbutton_margin">35dp</dimen>
     <dimen name="title_text">22sp</dimen>
     <dimen name="normal_text">18sp</dimen>
 
