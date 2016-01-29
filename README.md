@@ -12,7 +12,8 @@
 ![image](https://github.com/tttony3/WeChatHongBao/blob/master/preview.jpg)
 
 ##TODO
-增加对QQ红包的支持
+1.完善功能，加入概率抢，自定义概率
+2.增加对QQ红包的支持
 
 
 ## 版权说明
