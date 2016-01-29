@@ -5,8 +5,10 @@ import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Parcelable;
@@ -21,7 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class HongbaoService extends AccessibilityService {
+public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
 
     private boolean mLuckyMoneyPicked, mLuckyMoneyReceived, mNeedUnpack, mNeedBack;
@@ -39,6 +41,7 @@ public class HongbaoService extends AccessibilityService {
     private static final String WECHAT_VIEW_SELF_CH = "查看红包";
     private static final String WECHAT_VIEW_OTHERS_CH = "领取红包";
     private final static String WECHAT_NOTIFICATION_TIP = "[微信红包]";
+    private final static String WECHAT_LUCKMONEY_ACTIVITY = "luckymoney";
 
     private boolean mMutex = false;
 
@@ -47,8 +50,10 @@ public class HongbaoService extends AccessibilityService {
     private boolean isLookList = true;
     private boolean isLookNotification = true;
     private boolean isLookChat = true;
+    private boolean isDefense = true;
+    private long lastTime = 0;
 
-  //  public static Map<String, Boolean> watchedFlags = new HashMap<>();
+    //  public static Map<String, Boolean> watchedFlags = new HashMap<>();
 
     /**
      * AccessibilityEvent的回调方法
@@ -58,14 +63,21 @@ public class HongbaoService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (ignoreFieldList == null) return;
+        if (isDefense) {
+            long thistime = System.currentTimeMillis();
 
+            if (thistime - lastTime < 1000)
+                return;
+            else
+                lastTime = thistime;
+        }
         /* 检测通知消息 */
         if (!mMutex) {
             if (isLookNotification && watchNotifications(event)) return;
             if (isLookList && watchList(event)) return;
         }
 
-        if (!isLookChat ) return;
+        if (!isLookChat) return;
 
         this.rootNodeInfo = event.getSource();
 
@@ -74,7 +86,7 @@ public class HongbaoService extends AccessibilityService {
         mReceiveNode = null;
         mUnpackNode = null;
 
-        checkNodeInfo();
+        checkNodeInfo(event);
 
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
@@ -88,7 +100,7 @@ public class HongbaoService extends AccessibilityService {
         /* 如果戳开但还未领取 */
         if (mNeedUnpack && (mUnpackNode != null)) {
             AccessibilityNodeInfo cellNode = mUnpackNode;
-            if(delayTime>0){
+            if (delayTime > 0) {
                 try {
                     Thread.sleep(delayTime);
                 } catch (InterruptedException e) {
@@ -118,7 +130,7 @@ public class HongbaoService extends AccessibilityService {
             AccessibilityNodeInfo nodeToClick;
             synchronized (this) {
                 nodeToClick = nodes.get(0);
-                if(nodeToClick ==null) return false;
+                if (nodeToClick == null) return false;
                 contentDescription = nodeToClick.getContentDescription();
                 if (contentDescription != null)
                     if (!lastContentDescription.equals(contentDescription)) {
@@ -163,7 +175,7 @@ public class HongbaoService extends AccessibilityService {
     /**
      * 检查节点信息
      */
-    private void checkNodeInfo() {
+    private void checkNodeInfo(AccessibilityEvent event) {
         if (this.rootNodeInfo == null) return;
 
         /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
@@ -172,7 +184,7 @@ public class HongbaoService extends AccessibilityService {
 
         if (!nodes1.isEmpty()) {
             AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
-            if (this.signature.generateSignature(targetNode,ignoreFieldList)) {
+            if (this.signature.generateSignature(targetNode, ignoreFieldList)) {
                 mLuckyMoneyReceived = true;
                 mReceiveNode = targetNode;
                 Log.d("sig", this.signature.toString());
@@ -181,8 +193,8 @@ public class HongbaoService extends AccessibilityService {
         }
 
         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
-        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3) ? this.rootNodeInfo.getChild(3) : null;
-        if (node2 != null && node2.getClassName().equals("android.widget.Button")) {
+        AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10) ? this.rootNodeInfo.getChild(3) : null;
+        if (node2 != null && node2.getClassName().equals("android.widget.Button") && getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
             mUnpackNode = node2;
             mNeedUnpack = true;
             return;
@@ -228,45 +240,69 @@ public class HongbaoService extends AccessibilityService {
 
     private void watchFlagsFromPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPreferences.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                switch (key){
-                    case "look_chat":
-                        isLookChat = sharedPreferences.getBoolean("look_chat", true);
-                        break;
-                    case "look_notification":
-                        isLookNotification= sharedPreferences.getBoolean("look_notification", true);
-                        break;
-                    case "look_list":
-                        isLookList = sharedPreferences.getBoolean("look_list", true);
-                        break;
-                    case "delay_time":
-                        String strDelayTime = sharedPreferences.getString("delay_time","0");
-                        delayTime=Integer.valueOf(strDelayTime);
-                        break;
-                    case "ignore_field":
-                        String strIgnore = sharedPreferences.getString("ignore_field","");
-                        if(!strIgnore.equals("")){
-                            ignoreFieldList= Arrays.asList(strIgnore.split(","));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-        });
-
+        sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        isDefense = sharedPreferences.getBoolean("defense", true);
         isLookChat = sharedPreferences.getBoolean("look_chat", true);
-        isLookNotification= sharedPreferences.getBoolean("look_notification", true);
+        isLookNotification = sharedPreferences.getBoolean("look_notification", true);
         isLookList = sharedPreferences.getBoolean("look_list", true);
-        String strDelayTime = sharedPreferences.getString("delay_time","0");
-        delayTime=Integer.valueOf(strDelayTime);
-        String strIgnore = sharedPreferences.getString("ignore_field","");
-        if(!strIgnore.equals("")){
-            ignoreFieldList= Arrays.asList(strIgnore.split(","));
+        String strDelayTime = sharedPreferences.getString("delay_time", "0");
+        delayTime = Integer.valueOf(strDelayTime);
+        String strIgnore = sharedPreferences.getString("ignore_field", "");
+        if (!strIgnore.equals("")) {
+            ignoreFieldList = Arrays.asList(strIgnore.split(","));
         }
     }
+
+    /**
+     * 获取当前activity名称
+     *  @param event
+     *  @return
+     *
+     */
+    private String getCurrentActivity(AccessibilityEvent event) {
+        ComponentName componentName = new ComponentName(
+                event.getPackageName().toString(),
+                event.getClassName().toString()
+        );
+
+        try {
+            getPackageManager().getActivityInfo(componentName, 0);
+            return componentName.flattenToShortString();
+
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        switch (key) {
+            case "look_chat":
+                isLookChat = sharedPreferences.getBoolean("look_chat", true);
+                break;
+            case "look_notification":
+                isLookNotification = sharedPreferences.getBoolean("look_notification", true);
+                break;
+            case "look_list":
+                isLookList = sharedPreferences.getBoolean("look_list", true);
+                break;
+            case "defense":
+                isDefense = sharedPreferences.getBoolean("defense", true);
+                break;
+            case "delay_time":
+                String strDelayTime = sharedPreferences.getString("delay_time", "0");
+                delayTime = Integer.valueOf(strDelayTime);
+                break;
+            case "ignore_field":
+                String strIgnore = sharedPreferences.getString("ignore_field", "");
+                if (!strIgnore.equals("")) {
+                    ignoreFieldList = Arrays.asList(strIgnore.split(","));
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
 }
 

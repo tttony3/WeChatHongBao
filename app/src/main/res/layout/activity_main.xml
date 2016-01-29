@@ -135,6 +135,38 @@
                 />
         </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_marginStart="@dimen/activity_horizontal_margin"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:text="@string/defense"
+                android:textSize="@dimen/normal_text" />
+
+            <com.kyleduo.switchbutton.SwitchButton
+                android:id="@+id/SwitchButton_defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="50dp"
+                app:kswFadeBack="true" />
+            <TextView
+                android:layout_below="@+id/SwitchButton_defense"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/description_margin"
+                android:layout_marginEnd="@dimen/description_margin"
+                android:layout_marginBottom="5dp"
+                android:text="@string/defense_description"
+                />
+        </RelativeLayout>
         <View
             android:layout_width="match_parent"
 

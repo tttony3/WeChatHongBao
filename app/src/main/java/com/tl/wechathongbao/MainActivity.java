@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     SwitchButton btn_list;
     SwitchButton btn_notification;
     SwitchButton btn_chat;
+    SwitchButton btn_defense;
     EditText ed_delay;
     EditText ed_field;
     Button btn;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         btn_list.setChecked(sharedPreferences.getBoolean("look_list",true));
         btn_notification.setChecked(sharedPreferences.getBoolean("look_notification",true));
         btn_chat.setChecked(sharedPreferences.getBoolean("look_chat",true));
+        btn_defense.setChecked(sharedPreferences.getBoolean("defense",true));
         ed_delay.setText(sharedPreferences.getString("delay_time","0"));
         ed_field.setText(sharedPreferences.getString("ignore_field",""));
         btn.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
         btn_list = (SwitchButton) findViewById(R.id.SwitchButton_list);
         btn_notification = (SwitchButton) findViewById(R.id.SwitchButton_notification);
         btn_chat = (SwitchButton) findViewById(R.id.SwitchButton_chat);
+        btn_defense = (SwitchButton) findViewById(R.id.SwitchButton_defense);
         ed_delay = (EditText) findViewById(R.id.ed_delay);
         ed_field= (EditText) findViewById(R.id.ed_field);
         btn = (Button) findViewById(R.id.btn);
@@ -66,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putBoolean("look_list",btn_list.isChecked());
         editor.putBoolean("look_notification",btn_notification.isChecked());
         editor.putBoolean("look_chat",btn_chat.isChecked());
+        editor.putBoolean("defense",btn_defense.isChecked());
         String delay=ed_delay.getText().toString();
         if(delay.equals(""))
             editor.putString("delay_time",0+"");

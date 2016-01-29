@@ -13,7 +13,8 @@
     <string name="delay">延迟时间(ms)</string>
     <string name="service_open">开启插件</string>
     <string name="service_off">关闭插件</string>
-
+    <string name="defense">防御模式</string>
+    <string name="defense_description">避免有人暴力破外挂导致外挂失效</string>
     <string name="url">https://github.com/tttony3/WeChatHongBao</string>
     <string name="default_0">0</string>
     <string name="description">\t\t点击按钮，进入辅助功能，选择开启本插件(红包快来)即可自动抢红包\n\n\t\t注意\n\t\t延迟时间过长可能导致红包被抢完(max:1000)\n\t\t忽略字段过多可能导致效率降低\n\t\t关闭监控聊天窗口将不能自动点击红包</string>
