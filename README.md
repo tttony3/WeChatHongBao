@@ -8,9 +8,11 @@
 2.自定义 监控系统通知，微信聊天列表，微信聊天等三个界面，用户根据自己需要进行设置  
 3.自定义抢红包延迟时间，避免太快点击而被微信服务器封号（我猜有可能）  
 4.自定义忽略字段，例如实现不抢如 ：XX专属 等红包，避免被人发现用挂  
+![image](https://github.com/tttony3/WeChatHongBao/preview.jpeg)
 
 ##TODO
 增加对QQ红包的支持
+
 
 ## 版权说明
 ```
@@ -27,3 +29,6 @@
 	limitations under the License.
 
 ```
+
+## 鸣谢
+此项目在[**geeeeeeeeek**]https://github.com/geeeeeeeeek/WeChatLuckyMoney 的项目之上进行创作
