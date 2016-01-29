@@ -55,7 +55,6 @@ public class HongbaoService extends AccessibilityService {
      *
      * @param event 事件
      */
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         if (ignoreFieldList == null) return;
