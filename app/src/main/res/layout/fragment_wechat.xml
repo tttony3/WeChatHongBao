@@ -141,10 +141,10 @@
                     android:textSize="@dimen/body" />
 
                 <View
-                    android:layout_marginTop="5dp"
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:layout_below="@+id/desc_chat"
+                    android:layout_marginTop="5dp"
 
                     android:background="@color/dividerColor" />
             </RelativeLayout>
@@ -213,9 +213,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/activity_horizontal_margin"
+                    android:ems="6"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:ems="6"
                     android:text="@string/delay"
                     android:textColor="@color/mainTextColor"
                     android:textSize="@dimen/subhead" />
@@ -317,6 +317,13 @@
                 android:autoLink="web"
                 android:text="@string/url" />
 
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:id="@+id/miniAdLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
         </LinearLayout>
 
     </RelativeLayout>

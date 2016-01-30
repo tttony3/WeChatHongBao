@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.tl.wechathongbao">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
 
     <application
         android:allowBackup="true"
@@ -17,10 +24,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".AboutActivity"
             android:label="@string/about" />
+
         <service
             android:name=".HongbaoService"
             android:enabled="true"
@@ -35,6 +42,12 @@
                 android:resource="@xml/accessible_service_config" />
         </service>
 
+        <meta-data
+            android:name="APP_ID"
+            android:value="664f5ab682107f30c541d4d6aefc4184" />
+        <meta-data
+            android:name="APP_PID"
+            android:value="default" />
     </application>
 
 </manifest>

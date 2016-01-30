@@ -7,6 +7,7 @@
     <dimen name="headline">24sp</dimen>
     <dimen name="subhead">16sp</dimen>
     <dimen name="body">14sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 
 </resources>

@@ -4,6 +4,7 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -14,10 +15,13 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 
 import com.kyleduo.switchbutton.SwitchButton;
 
 import java.util.List;
+
+import cn.waps.AppConnect;
 
 /**
  * Created by tttony3 on 2016/1/30.
@@ -58,6 +62,13 @@ public class WeChatFragment extends Fragment {
                 startActivity(mAccessibleIntent);
             }
         });
+        //设置迷你广告背景颜色
+        AppConnect.getInstance(baseContext).setAdBackColor(Color.argb(50, 120, 240, 120));
+//设置迷你广告广告诧颜色
+        AppConnect.getInstance(baseContext).setAdForeColor(Color.YELLOW);
+//若未设置以上两个颜色，则默认为黑底白字
+        LinearLayout miniLayout = (LinearLayout) view.findViewById(R.id.miniAdLinearLayout);
+        AppConnect.getInstance(baseContext).showMiniAd(baseContext, miniLayout, 10); //默认 10 秒切换一次广告
     }
 
     @Override
@@ -81,13 +92,13 @@ public class WeChatFragment extends Fragment {
     @Override
     public void onStop() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("look_list",btn_list.isChecked());
-        editor.putBoolean("look_notification",btn_notification.isChecked());
-        editor.putBoolean("look_chat",btn_chat.isChecked());
-        editor.putBoolean("defense",btn_defense.isChecked());
-        String delay=ed_delay.getText().toString();
-        if(delay.equals(""))
-            editor.putString("delay_time",0+"");
+        editor.putBoolean("look_list", btn_list.isChecked());
+        editor.putBoolean("look_notification", btn_notification.isChecked());
+        editor.putBoolean("look_chat", btn_chat.isChecked());
+        editor.putBoolean("defense", btn_defense.isChecked());
+        String delay = ed_delay.getText().toString();
+        if (delay.equals(""))
+            editor.putString("delay_time", 0 + "");
         else {
             int delay_num = Integer.valueOf(delay);
             if (delay_num < 0)
@@ -97,7 +108,7 @@ public class WeChatFragment extends Fragment {
             else
                 editor.putString("delay_time", delay_num + "");
         }
-        editor.putString("ignore_field",ed_field.getText().toString());
+        editor.putString("ignore_field", ed_field.getText().toString());
         editor.apply();
         super.onStop();
     }

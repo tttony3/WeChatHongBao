@@ -8,4 +8,9 @@
         android:title="@string/about"
         android:orderInCategory="100"
         app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_adv"
+        android:title="@string/adv"
+        android:orderInCategory="100"
+        app:showAsAction="never" />
 </menu>

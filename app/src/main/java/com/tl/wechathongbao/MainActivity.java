@@ -13,19 +13,25 @@ import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
+import cn.waps.AppConnect;
+
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
+    private String APP_ID = "664f5ab682107f30c541d4d6aefc4184";
+    private String APP_PID = "default";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppConnect.getInstance(APP_ID, APP_PID, this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager();
+        AppConnect.getInstance(this).initUninstallAd(this);
     }
     private void setupViewPager() {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -56,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_about:
                 intent.setClass(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.action_adv:
+                AppConnect.getInstance(this).showOffers(this);
+
+//                intent.setClass(MainActivity.this, AdvActivity.class);
+//                startActivity(intent);
                 break;
             default:
                 break;
