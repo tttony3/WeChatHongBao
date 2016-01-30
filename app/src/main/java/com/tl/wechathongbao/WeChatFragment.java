@@ -1,6 +1,7 @@
 package com.tl.wechathongbao;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -16,8 +17,11 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.baidu.mobads.AdSettings;
+import com.baidu.mobads.AdView;
 
 import java.util.List;
 
@@ -35,7 +39,9 @@ public class WeChatFragment extends Fragment {
     SwitchButton btn_defense;
     EditText ed_delay;
     EditText ed_field;
+    EditText ed_probability;
     Button btn;
+    AdView adView;
     SharedPreferences sharedPreferences;
     public final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
@@ -53,22 +59,19 @@ public class WeChatFragment extends Fragment {
         btn_list.setChecked(sharedPreferences.getBoolean("look_list", true));
         btn_notification.setChecked(sharedPreferences.getBoolean("look_notification", true));
         btn_chat.setChecked(sharedPreferences.getBoolean("look_chat", true));
-        btn_defense.setChecked(sharedPreferences.getBoolean("defense", true));
+        btn_defense.setChecked(sharedPreferences.getBoolean("defense", false));
         ed_delay.setText(sharedPreferences.getString("delay_time", "0"));
         ed_field.setText(sharedPreferences.getString("ignore_field", ""));
+        ed_probability.setText(sharedPreferences.getString("wechat_probability", "10"));
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(mAccessibleIntent);
             }
         });
-        //设置迷你广告背景颜色
-        AppConnect.getInstance(baseContext).setAdBackColor(Color.argb(50, 120, 240, 120));
-//设置迷你广告广告诧颜色
-        AppConnect.getInstance(baseContext).setAdForeColor(Color.YELLOW);
-//若未设置以上两个颜色，则默认为黑底白字
-        LinearLayout miniLayout = (LinearLayout) view.findViewById(R.id.miniAdLinearLayout);
-        AppConnect.getInstance(baseContext).showMiniAd(baseContext, miniLayout, 10); //默认 10 秒切换一次广告
+
+        setWapsBanner();
+        //   baiduBanner();
     }
 
     @Override
@@ -76,6 +79,18 @@ public class WeChatFragment extends Fragment {
         super.onStart();
         initView();
         updateServiceStatus();
+    }
+
+    private void setWapsBanner() {
+        //设置迷你广告背景颜色
+        AppConnect.getInstance(baseContext).setAdBackColor(Color.argb(50, 197, 202, 233));
+        //设置迷你广告字体颜色
+        AppConnect.getInstance(baseContext).setAdForeColor(R.color.secondaryTextColor);
+        LinearLayout miniLayout = (LinearLayout) view.findViewById(R.id.miniAdLinearLayout);
+        AppConnect.getInstance(baseContext).showMiniAd(baseContext, miniLayout, 10); //默认 10 秒切换一次广告
+
+        LinearLayout adlayout = (LinearLayout) view.findViewById(R.id.AdLinearLayout);
+        AppConnect.getInstance(baseContext).showBannerAd(baseContext, adlayout);
     }
 
 
@@ -86,6 +101,7 @@ public class WeChatFragment extends Fragment {
         btn_defense = (SwitchButton) view.findViewById(R.id.SwitchButton_defense);
         ed_delay = (EditText) view.findViewById(R.id.ed_delay);
         ed_field = (EditText) view.findViewById(R.id.ed_field);
+        ed_probability = (EditText) view.findViewById(R.id.ed_probability);
         btn = (Button) view.findViewById(R.id.btn);
     }
 
@@ -107,6 +123,16 @@ public class WeChatFragment extends Fragment {
                 editor.putString("delay_time", 1000 + "");
             else
                 editor.putString("delay_time", delay_num + "");
+        }
+        String strProbability = ed_probability.getText().toString();
+        if (strProbability.equals(""))
+            editor.putString("wechat_probability", 10 + "");
+        else {
+            int probability = Integer.valueOf(strProbability);
+            if (probability <= 0 || probability > 10)
+                editor.putString("wechat_probability", 10 + "");
+            else
+                editor.putString("wechat_probability", probability + "");
         }
         editor.putString("ignore_field", ed_field.getText().toString());
         editor.apply();
@@ -132,5 +158,20 @@ public class WeChatFragment extends Fragment {
         } else {
             btn.setText(R.string.service_off);
         }
+    }
+
+    void baiduBanner() {
+        //人群属性
+        AdSettings.setKey(new String[]{"baidu", "中国"});
+        //创建广告view
+        String adPlaceID = "2404255";//重要：请填上你的代码位ID,否则无法请求到广告
+        adView = new AdView(baseContext, adPlaceID);
+        //设置监听器
+
+        //将adView添加到父控件中（注：该父控件不一定为您的根控件，只要该控件能通过addView添加广告视图即可）
+        RelativeLayout.LayoutParams rllp = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT);
+        //rllp.addRule(LinearLayout.VERTICAL);
+        ((LinearLayout) view.findViewById(R.id.content2)).addView(adView, rllp);
     }
 }

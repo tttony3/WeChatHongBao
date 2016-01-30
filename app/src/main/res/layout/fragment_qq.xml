@@ -12,18 +12,20 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context="com.tl.wechathongbao.MainActivity">
 
-
-
-
-
         <LinearLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/miniAdLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -44,23 +46,14 @@
                 android:text="开启插件"
                 android:textColor="#eaeaea" />
 
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:autoLink="web"
-                android:text="@string/url" />
-
             <LinearLayout
                 android:layout_marginTop="5dp"
+                android:id="@+id/AdLinearLayout"
                 android:orientation="horizontal"
-                android:id="@+id/miniAdLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal" />
+
 
         </LinearLayout>
 

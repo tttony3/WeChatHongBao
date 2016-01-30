@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
@@ -52,6 +53,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private boolean isLookChat = true;
     private boolean isDefense = true;
     private long lastTime = 0;
+    private int wechat_probability;
 
     //  public static Map<String, Boolean> watchedFlags = new HashMap<>();
 
@@ -66,7 +68,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         if (isDefense) {
             long thistime = System.currentTimeMillis();
 
-            if (thistime - lastTime < 1000)
+            if (thistime - lastTime < 3000)
                 return;
             else
                 lastTime = thistime;
@@ -91,6 +93,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         /* 如果已经接收到红包并且还没有戳开 */
         if (mLuckyMoneyReceived && !mLuckyMoneyPicked && (mReceiveNode != null)) {
             mMutex = true;
+
 
             AccessibilityNodeInfo cellNode = mReceiveNode;
             cellNode.getParent().performAction(AccessibilityNodeInfo.ACTION_CLICK);
@@ -184,10 +187,11 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
 
         if (!nodes1.isEmpty()) {
             AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
-            if (this.signature.generateSignature(targetNode, ignoreFieldList)) {
+
+
+            if (this.signature.generateSignature(targetNode, ignoreFieldList, wechat_probability)) {
                 mLuckyMoneyReceived = true;
                 mReceiveNode = targetNode;
-                Log.d("sig", this.signature.toString());
             }
             return;
         }
@@ -241,7 +245,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private void watchFlagsFromPreference() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
-        isDefense = sharedPreferences.getBoolean("defense", true);
+        isDefense = sharedPreferences.getBoolean("defense", false);
         isLookChat = sharedPreferences.getBoolean("look_chat", true);
         isLookNotification = sharedPreferences.getBoolean("look_notification", true);
         isLookList = sharedPreferences.getBoolean("look_list", true);
@@ -287,7 +291,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 isLookList = sharedPreferences.getBoolean("look_list", true);
                 break;
             case "defense":
-                isDefense = sharedPreferences.getBoolean("defense", true);
+                isDefense = sharedPreferences.getBoolean("defense", false);
                 break;
             case "delay_time":
                 String strDelayTime = sharedPreferences.getString("delay_time", "0");
@@ -298,6 +302,10 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 if (!strIgnore.equals("")) {
                     ignoreFieldList = Arrays.asList(strIgnore.split(","));
                 }
+                break;
+            case "wechat_probability":
+                String strProbability = sharedPreferences.getString("wechat_probability", "0");
+                wechat_probability = Integer.valueOf(strProbability);
                 break;
             default:
                 break;

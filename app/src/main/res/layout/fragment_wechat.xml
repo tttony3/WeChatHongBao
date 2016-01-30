@@ -16,9 +16,14 @@
             android:id="@+id/content1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:orientation="horizontal"
+                android:id="@+id/miniAdLinearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal" />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -170,7 +175,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     android:layout_marginEnd="@dimen/switchbutton_margin"
-                    android:checked="true"
+                    android:checked="false"
                     app:kswFadeBack="true" />
 
                 <TextView
@@ -194,10 +199,10 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/content2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/content1"
-
             android:orientation="vertical">
 
             <RelativeLayout
@@ -309,21 +314,15 @@
                 android:textColor="@color/secondaryTextColor"
                 android:textSize="@dimen/body" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="10dp"
-                android:autoLink="web"
-                android:text="@string/url" />
-
             <LinearLayout
                 android:layout_marginTop="5dp"
+                android:id="@+id/AdLinearLayout"
                 android:orientation="horizontal"
-                android:id="@+id/miniAdLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal" />
+
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -8,23 +8,23 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.waps.AppConnect;
+import cn.waps.AppListener;
 
 public class MainActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
     private TabLayout mTabLayout;
-    private String APP_ID = "664f5ab682107f30c541d4d6aefc4184";
-    private String APP_PID = "default";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        AppConnect.getInstance(APP_ID, APP_PID, this);
+        AppConnect.getInstance(this);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -32,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager();
         AppConnect.getInstance(this).initUninstallAd(this);
+        AppConnect.getInstance(this).setBannerAdNoDataListener(new AppListener() {
+            @Override
+            public void onBannerNoData() {
+                Log.e("debug", "Banner广告无数据");
+            }
+        });
     }
     private void setupViewPager() {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -65,13 +71,17 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.action_adv:
                 AppConnect.getInstance(this).showOffers(this);
-
-//                intent.setClass(MainActivity.this, AdvActivity.class);
-//                startActivity(intent);
                 break;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppConnect.getInstance(this).close();
+        AppConnect.getInstance(this).close();
     }
 }

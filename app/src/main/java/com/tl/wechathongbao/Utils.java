@@ -4,14 +4,16 @@ import android.support.annotation.NonNull;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by tttony3 on 16-1-29.
  */
 public class Utils {
+    Random random = new Random(10);
     private String sender="", content="", time="";
 
-    public boolean generateSignature(AccessibilityNodeInfo node, List<String> ignoreFieldList) {
+    public boolean generateSignature(AccessibilityNodeInfo node, List<String> ignoreFieldList, int wechat_probability) {
         try {
             AccessibilityNodeInfo hongbaoNode = node.getParent();
             String hongbaoContent = hongbaoNode.getChild(0).getText().toString();
@@ -35,7 +37,8 @@ public class Utils {
             this.sender = hongbaoInfo[0];
             this.time = hongbaoInfo[1];
             this.content = hongbaoContent;
-            return true;
+            return random.nextInt() <= wechat_probability;
+
         } catch (Exception e) {
             e.printStackTrace();
             return false;
