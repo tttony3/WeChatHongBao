@@ -29,4 +29,13 @@
         android:textSize="@dimen/subhead"
         android:text="@string/declaration" />
 
+    <TextView
+        android:textColor="@color/mainTextColor"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:autoLink="web"
+        android:textSize="@dimen/subhead"
+        android:text="@string/url" />
 </LinearLayout>

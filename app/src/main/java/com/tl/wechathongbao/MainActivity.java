@@ -31,13 +31,6 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager();
-        AppConnect.getInstance(this).initUninstallAd(this);
-        AppConnect.getInstance(this).setBannerAdNoDataListener(new AppListener() {
-            @Override
-            public void onBannerNoData() {
-                Log.e("debug", "Banner广告无数据");
-            }
-        });
     }
     private void setupViewPager() {
         mTabLayout = (TabLayout) findViewById(R.id.tabs);
@@ -69,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.setClass(MainActivity.this, AboutActivity.class);
                 startActivity(intent);
                 break;
-            case R.id.action_adv:
-                AppConnect.getInstance(this).showOffers(this);
-                break;
+
             default:
                 break;
         }
@@ -81,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        AppConnect.getInstance(this).close();
         AppConnect.getInstance(this).close();
     }
 }

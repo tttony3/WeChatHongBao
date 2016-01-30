@@ -20,12 +20,6 @@
             android:focusableInTouchMode="true"
             android:orientation="vertical">
 
-            <LinearLayout
-                android:orientation="horizontal"
-                android:id="@+id/miniAdLinearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -45,15 +39,6 @@
                 android:background="@drawable/btn_selector"
                 android:text="开启插件"
                 android:textColor="#eaeaea" />
-
-            <LinearLayout
-                android:layout_marginTop="5dp"
-                android:id="@+id/AdLinearLayout"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal" />
-
 
         </LinearLayout>
 

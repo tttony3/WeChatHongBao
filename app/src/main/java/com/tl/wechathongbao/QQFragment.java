@@ -81,18 +81,6 @@ public class QQFragment extends Fragment {
                 startActivity(mAccessibleIntent);
             }
         });
-        setWapsBanner();
     }
 
-    private void setWapsBanner() {
-        //设置迷你广告背景颜色
-        AppConnect.getInstance(baseContext).setAdBackColor(Color.argb(50, 197, 202, 233));
-        //设置迷你广告字体颜色
-        AppConnect.getInstance(baseContext).setAdForeColor(R.color.secondaryTextColor);
-        LinearLayout miniLayout = (LinearLayout) view.findViewById(R.id.miniAdLinearLayout);
-        AppConnect.getInstance(baseContext).showMiniAd(baseContext, miniLayout, 10); //默认 10 秒切换一次广告
-
-        LinearLayout adlayout = (LinearLayout) view.findViewById(R.id.AdLinearLayout);
-        AppConnect.getInstance(baseContext).showBannerAd(baseContext, adlayout);
-    }
 }
