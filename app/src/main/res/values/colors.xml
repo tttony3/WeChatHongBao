@@ -2,6 +2,13 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="btnDark">#202F8F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryLight">#C5CAE9</color>
+    <color name="colorAccent">#00BCD4</color>
+    <color name="mainTextColor">#E1000000</color>
+    <color name="secondaryTextColor">#8B000000</color>
+    <color name="thirdTextColor">#41000000</color>
+    <color name="dividerColor">#1c000000</color>
+    <color name="background">#ffffff</color>
+    <color name="btnDefault">#3F51B5</color>
+    <color name="btnPress">#202F8F</color>
 </resources>

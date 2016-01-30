@@ -7,10 +7,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,7 +20,7 @@ import com.kyleduo.switchbutton.SwitchButton;
 import java.util.List;
 
 /**
- * Created by tony on 2016/1/30.
+ * Created by tttony3 on 2016/1/30.
  */
 public class WeChatFragment extends Fragment {
     public Context baseContext;
@@ -45,7 +42,6 @@ public class WeChatFragment extends Fragment {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext);
         view = inflater.inflate(R.layout.fragment_wechat, container, false);
         findView();
-
         return view;
     }
 
@@ -65,11 +61,12 @@ public class WeChatFragment extends Fragment {
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onStart() {
+        super.onStart();
         initView();
         updateServiceStatus();
     }
+
 
     private void findView() {
         btn_list = (SwitchButton) view.findViewById(R.id.SwitchButton_list);
