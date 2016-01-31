@@ -1,10 +1,9 @@
-package com.tl.wechathongbao;
+package com.tl.wechathongbao.fragments;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.Settings;
@@ -14,30 +13,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
+import android.widget.CompoundButton;
 
 import com.kyleduo.switchbutton.SwitchButton;
+import com.tl.wechathongbao.R;
 
 import java.util.List;
-
-import cn.waps.AppConnect;
 
 /**
  * Created by tony on 2016/1/30.
  */
-public class QQFragment extends Fragment {
+public class AlipayFragment extends Fragment {
     View view;
     Context baseContext;
     SharedPreferences sharedPreferences;
     private Button btn;
     public final Intent mAccessibleIntent =
             new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS);
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         baseContext = getActivity();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(baseContext);
-        view = inflater.inflate(R.layout.fragment_qq, container, false);
+        view = inflater.inflate(R.layout.fragment_alipay, container, false);
         findView();
         return view;
     }
@@ -57,7 +55,7 @@ public class QQFragment extends Fragment {
         List<AccessibilityServiceInfo> accessibilityServices =
                 accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         for (AccessibilityServiceInfo info : accessibilityServices) {
-            if (info.getId().equals(baseContext.getPackageName() + "/.HongbaoService")) {
+            if (info.getId().equals(baseContext.getPackageName() + "/.services.AlipayService")) {
                 serviceEnabled = true;
                 break;
             }
@@ -81,6 +79,11 @@ public class QQFragment extends Fragment {
                 startActivity(mAccessibleIntent);
             }
         });
+
     }
 
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
 }

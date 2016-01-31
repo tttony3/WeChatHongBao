@@ -1,4 +1,4 @@
-package com.tl.wechathongbao;
+package com.tl.wechathongbao.fragments;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.Button;
 import android.widget.EditText;
 import com.kyleduo.switchbutton.SwitchButton;
+import com.tl.wechathongbao.R;
 
 import java.util.List;
 
@@ -125,7 +126,7 @@ public class WeChatFragment extends Fragment {
         List<AccessibilityServiceInfo> accessibilityServices =
                 accessibilityManager.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_GENERIC);
         for (AccessibilityServiceInfo info : accessibilityServices) {
-            if (info.getId().equals(baseContext.getPackageName() + "/.HongbaoService")) {
+            if (info.getId().equals(baseContext.getPackageName() + "/.services.HongbaoService")) {
                 serviceEnabled = true;
                 break;
             }

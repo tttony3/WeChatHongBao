@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/background"
-    tools:context="com.tl.wechathongbao.AboutActivity">
+    tools:context=".activities.AboutActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

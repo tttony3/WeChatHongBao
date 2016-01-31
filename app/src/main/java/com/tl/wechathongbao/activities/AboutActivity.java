@@ -1,9 +1,11 @@
-package com.tl.wechathongbao;
+package com.tl.wechathongbao.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import com.tl.wechathongbao.R;
 
 public class AboutActivity extends AppCompatActivity {
 
