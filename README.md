@@ -34,5 +34,3 @@
 
 ```
 
-## 鸣谢
-此项目在[**geeeeeeeeek**](https://github.com/geeeeeeeeek/WeChatLuckyMoney) 的项目之上进行创作

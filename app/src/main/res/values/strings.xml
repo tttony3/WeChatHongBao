@@ -7,7 +7,7 @@
     <string name="look_notification">监控通知信息</string>
     <string name="look_chat">监控聊天窗口</string>
     <string name="not_match">红包包含以下字段则不抢(多个字段以\',\'分开)</string>
-    <string name="look_list_description">监控聊天列表,当有新红包时，自动进入聊天</string>
+    <string name="look_list_description">监控聊天列表，当有新红包时，自动进入聊天</string>
     <string name="look_notification_description">监控通知信息，当有红包通知，自动进入微信</string>
     <string name="look_chat_description">监控聊天窗口，当有红包信息，自动打开红包</string>
     <string name="delay">延迟时间(ms)</string>
