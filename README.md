@@ -1,8 +1,9 @@
 # WeChatHongBao 微信抢红包插件  
 前往[**Release**](https://github.com/tttony3/WeChatHongBao/releases/)下载最新可用版本。   
 这个插件安装后，可以实现自动抢微信红包。   
-> 使用方法：安装app,进入app点击开启插件，自动跳转到辅助功能，在辅助功能-服务中，开启<红包快来>   
-
+> 使用方法：安装app,进入app点击开启插件，自动跳转到辅助功能，在辅助功能-服务中，开启<红包快来>   
+##update
+现已更新为支持Android7.0版本(分辨率1920*1080)
 ##特点说明
 1.自动检测红包，当红包来了自动进入微信进行点击(需要在解锁亮屏状态下)   
 2.自定义 监控系统通知，微信聊天列表，微信聊天等三个界面，用户根据自己需要进行设置  
@@ -20,6 +21,8 @@
 
 ## 版权说明
 ```
+	Copyright tttony3 
+	
 	Licensed under the Apache License, Version 2.0 (the "License");
 	you may not use this file except in compliance with the License.
 	You may obtain a copy of the License at
