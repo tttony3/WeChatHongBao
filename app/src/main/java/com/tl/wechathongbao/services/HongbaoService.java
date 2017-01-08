@@ -1,18 +1,14 @@
 package com.tl.wechathongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
+import android.accessibilityservice.GestureDescription;
 import android.annotation.TargetApi;
-import android.app.ActivityManager;
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.Service;
 import android.content.ComponentName;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.os.Build;
-import android.os.IBinder;
+import android.graphics.Path;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -23,10 +19,7 @@ import com.tl.wechathongbao.Utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class HongbaoService extends AccessibilityService implements SharedPreferences.OnSharedPreferenceChangeListener {
     private AccessibilityNodeInfo mReceiveNode, mUnpackNode;
@@ -57,7 +50,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private boolean isLookChat = true;
     private boolean isDefense = true;
     private long lastTime = 0;
-    private int wechat_probability;
+    private int wechat_probability = 10;
 
     //  public static Map<String, Boolean> watchedFlags = new HashMap<>();
 
@@ -157,6 +150,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
 
         // Not a hongbao
         String tip = event.getText().toString();
+        Log.e("tl", "tip" + tip);
         if (!tip.contains(WECHAT_NOTIFICATION_TIP)) return true;
 
         Parcelable parcelable = event.getParcelableData();
@@ -200,15 +194,38 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             return;
         }
 
-        /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包” */
+
+        if (getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
+            Path path = new Path();
+            path.moveTo(540, 1060);
+            GestureDescription.Builder builder = new GestureDescription.Builder();
+            GestureDescription gestureDescription = builder.addStroke(new GestureDescription.StrokeDescription(path, 450, 50)).build();
+            dispatchGesture(gestureDescription, new GestureResultCallback() {
+                @Override
+                public void onCompleted(GestureDescription gestureDescription) {
+                    Log.d("tl", "onCompleted");
+                    mMutex = false;
+                    super.onCompleted(gestureDescription);
+                }
+
+                @Override
+                public void onCancelled(GestureDescription gestureDescription) {
+                    mMutex = false;
+                    super.onCancelled(gestureDescription);
+                }
+            }, null);
+
+        }
+         /* 戳开红包，红包还没抢完，遍历节点匹配“拆红包”
+
         AccessibilityNodeInfo node2 = (this.rootNodeInfo.getChildCount() > 3 && this.rootNodeInfo.getChildCount() < 10) ? this.rootNodeInfo.getChild(3) : null;
         if (node2 != null && node2.getClassName().equals("android.widget.Button") && getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
             mUnpackNode = node2;
             mNeedUnpack = true;
             return;
         }
-
-        /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了” */
+ */
+        /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了”
         if (mLuckyMoneyPicked) {
             List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
                     WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
@@ -217,7 +234,7 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
                 mNeedBack = true;
                 mLuckyMoneyPicked = false;
             }
-        }
+        }*/
     }
 
 

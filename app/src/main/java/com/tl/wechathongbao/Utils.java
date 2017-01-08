@@ -16,10 +16,12 @@ public class Utils {
     public boolean generateSignature(AccessibilityNodeInfo node, List<String> ignoreFieldList, int wechat_probability) {
         try {
             AccessibilityNodeInfo hongbaoNode = node.getParent();
-            String hongbaoContent = hongbaoNode.getChild(0).getText().toString();
+            if (hongbaoNode.getChild(0) == null)
+                return false;
+            CharSequence cs = hongbaoNode.getChild(0).getText();
 
-            if (hongbaoContent == null) return false;
-
+            if (cs == null) return false;
+            String hongbaoContent = cs.toString();
             if(!ignoreFieldList.isEmpty()){
                 for(String str :ignoreFieldList){
                     if(hongbaoContent.contains(str)){
@@ -28,7 +30,8 @@ public class Utils {
                 }
             }
             AccessibilityNodeInfo messageNode = hongbaoNode.getParent();
-
+            if (null == messageNode)
+                return false;
             String[] hongbaoInfo = getSenderContentDescriptionFromNode(messageNode);
              String signature = getSignature(hongbaoInfo[0], hongbaoContent, hongbaoInfo[1]);
             if(signature.equals("")) return false;

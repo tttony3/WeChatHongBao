@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <accessibility-service
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:description="@string/app_description"
@@ -8,4 +7,5 @@
     android:notificationTimeout="10"
     android:settingsActivity="com.tl.wechathongbao.activities.MainActivity"
     android:accessibilityFlags="flagDefault"
+    android:canPerformGestures="true"
     android:canRetrieveWindowContent="true"/>
