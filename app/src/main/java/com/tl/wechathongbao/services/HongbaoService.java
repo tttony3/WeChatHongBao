@@ -2,7 +2,6 @@ package com.tl.wechathongbao.services;
 
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -179,15 +178,22 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
     private void checkNodeInfo(AccessibilityEvent event) {
         if (this.rootNodeInfo == null) return;
 
-        /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包" */
-        List<AccessibilityNodeInfo> nodes1 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
+        /* 聊天会话窗口，遍历节点匹配“领取红包”和"查看红包"
+         *   List<AccessibilityNodeInfo> nodes1 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
                 WECHAT_VIEW_OTHERS_CH});
-
+          * */
+        List<AccessibilityNodeInfo> nodes1 = rootNodeInfo.findAccessibilityNodeInfosByText(WECHAT_VIEW_OTHERS_CH);
+        List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
+                WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
+                WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH});
         if (!nodes1.isEmpty()) {
+
+
             AccessibilityNodeInfo targetNode = nodes1.get(nodes1.size() - 1);
 
 
             if (this.signature.generateSignature(targetNode, ignoreFieldList, wechat_probability)) {
+                Log.d("tl", "mLuckyMoneyReceived");
                 mLuckyMoneyReceived = true;
                 mReceiveNode = targetNode;
             }
@@ -195,7 +201,8 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
         }
 
 
-        if (getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY)) {
+        if (getCurrentActivity(event).contains(WECHAT_LUCKMONEY_ACTIVITY) && nodes3.isEmpty()) {
+
             Path path = new Path();
             path.moveTo(540, 1060);
             GestureDescription.Builder builder = new GestureDescription.Builder();
@@ -225,16 +232,14 @@ public class HongbaoService extends AccessibilityService implements SharedPrefer
             return;
         }
  */
-        /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了”
+        /* 戳开红包，红包已被抢完，遍历节点匹配“红包详情”和“手慢了”*/
         if (mLuckyMoneyPicked) {
-            List<AccessibilityNodeInfo> nodes3 = this.findAccessibilityNodeInfosByTexts(this.rootNodeInfo, new String[]{
-                    WECHAT_BETTER_LUCK_CH, WECHAT_DETAILS_CH,
-                    WECHAT_BETTER_LUCK_EN, WECHAT_DETAILS_EN, WECHAT_EXPIRES_CH});
+
             if (!nodes3.isEmpty()) {
                 mNeedBack = true;
                 mLuckyMoneyPicked = false;
             }
-        }*/
+        }
     }
 
 

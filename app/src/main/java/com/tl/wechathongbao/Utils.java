@@ -1,6 +1,7 @@
 package com.tl.wechathongbao;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.accessibility.AccessibilityNodeInfo;
 
 import java.util.List;
@@ -16,12 +17,19 @@ public class Utils {
     public boolean generateSignature(AccessibilityNodeInfo node, List<String> ignoreFieldList, int wechat_probability) {
         try {
             AccessibilityNodeInfo hongbaoNode = node.getParent();
-            if (hongbaoNode.getChild(0) == null)
+
+            if (hongbaoNode.getChild(0) == null) {
+                Log.d("tl", "hongbaoNode child(0) is null");
                 return false;
+            }
             CharSequence cs = hongbaoNode.getChild(0).getText();
 
-            if (cs == null) return false;
+            if (cs == null) {
+                Log.d("tl", "hongbaoNode child(0) text is null");
+                return false;
+            }
             String hongbaoContent = cs.toString();
+
             if(!ignoreFieldList.isEmpty()){
                 for(String str :ignoreFieldList){
                     if(hongbaoContent.contains(str)){
@@ -30,17 +38,25 @@ public class Utils {
                 }
             }
             AccessibilityNodeInfo messageNode = hongbaoNode.getParent();
-            if (null == messageNode)
+            if (null == messageNode) {
+                Log.d("tl", "messagenode is null ");
                 return false;
+            }
             String[] hongbaoInfo = getSenderContentDescriptionFromNode(messageNode);
              String signature = getSignature(hongbaoInfo[0], hongbaoContent, hongbaoInfo[1]);
-            if(signature.equals("")) return false;
-            if (signature.equals(this.toString())) return false;
+            if (signature.equals("")) {
+                Log.d("tl", "signature.equals('')");
+                return false;
+            }
+            if (signature.equals(this.toString())) {
+                return false;
+            }
 
             this.sender = hongbaoInfo[0];
             this.time = hongbaoInfo[1];
             this.content = hongbaoContent;
-            return random.nextInt() <= wechat_probability;
+            Log.d("tl", "signature " + this.toString());
+            return random.nextInt(10) <= wechat_probability;
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,6 +93,7 @@ public class Utils {
                 if (thisNodeText != null) result[1] = thisNodeText.toString();
             }
         }
+
         return result;
     }
 
